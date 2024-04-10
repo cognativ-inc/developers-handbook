@@ -87,3 +87,54 @@ export default function ColoredCard({ color, children }: ColoredCardProps) {
 ### Remove import React from 'react';
 
 Since we're using Next, we don't need to use `import React from 'react';`.
+
+### "use client" and React Hooks
+
+Leverage React Hooks such as useState, useEffect, useContext, etc., for managing state, side effects, and context within your components. As a rule, in Next.js you must add `"use client"`.
+
+
+```typescript
+// MyComponent.tsx
+
+import React, { useState, useEffect } from 'react';
+
+interface Data {
+  // Define your data type here
+}
+
+export default function MyComponent() {
+  const [data, setData] = useState<Data | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(function fetchData() {
+    async function fetchData() {
+      try {
+        const response = await fetch('https://api.example.com/data');
+        const jsonData: Data = await response.json();
+        setData(jsonData);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  return (
+    <div>
+      {loading ? (
+        <p>Loading...</p>
+      ) : data ? (
+        <div>
+          <h1>Data:</h1>
+          <pre>{JSON.stringify(data, null, 2)}</pre>
+        </div>
+      ) : (
+        <p>No data available.</p>
+      )}
+    </div>
+  );
+}
+```
