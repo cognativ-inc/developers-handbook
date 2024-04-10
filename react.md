@@ -343,10 +343,7 @@ export default function BadExampleComponent() {
   );
 }
 ```
-
-
-
-
+This is how you can improve it:
 
 ```typescript
 
