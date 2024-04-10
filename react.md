@@ -324,6 +324,30 @@ export default function SideEffectComponent() {
 
 Learn how to improve the flexibility and maintainability of your React components by avoiding hardcoding data directly within them. Hardcoded data can lead to inflexibility and difficulty in managing changes over time. Instead, opt for fetching data from external sources or passing it down as props to ensure components remain adaptable and reusable. This tutorial provides guidance on strategies for retrieving data dynamically, promoting better code organization and long-term maintainability.
 
+The following example shows a hardcoded code that can be improved:
+
+```typescript
+import React from 'react';
+
+export default function BadExampleComponent() {
+  return (
+    <div>
+      <h2>List of Items</h2>
+      <ul>
+        {/* Hardcoded data directly within the component */}
+        <li>Item 1</li>
+        <li>Item 2</li>
+        <li>Item 3</li>
+      </ul>
+    </div>
+  );
+}
+```
+
+
+
+
+
 ```typescript
 
 // Hardcoded data
