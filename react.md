@@ -173,6 +173,16 @@ export default function Title() {
 }
 ```
 
+```typescript
+// Content.tsx
+export default function Footer() {
+  return (
+    <footer>
+      <p>Contact information</p>
+    </footer>
+  );
+}
+```
 
 ```typescript
 // Footer.tsx
@@ -181,6 +191,60 @@ export default function Footer() {
     <footer>
       <p>Contact information</p>
     </footer>
+  );
+}
+```
+
+### Large Components
+
+Refrain from creating monolithic components with excessive logic. Break them down into smaller, more manageable pieces to improve readability and maintainability.
+
+### Mixing UI Logic with Business Logic
+
+Keep your components focused on presentation logic and avoid mixing business logic within them. Extract business logic into separate utility functions or hooks.
+
+```typescript
+// Calculator.ts
+export function calculateSum(a: number, b: number): number {
+  return a + b;
+}
+```
+
+And:
+
+```typescript
+// CalculatorComponent.tsx
+
+import React, { useState } from 'react';
+import { calculateSum } from './Calculator';
+
+export default function CalculatorComponent() {
+  const [num1, setNum1] = useState<number>(0);
+  const [num2, setNum2] = useState<number>(0);
+  const [result, setResult] = useState<number>(0);
+
+  const handleCalculate = () => {
+    const sum = calculateSum(num1, num2);
+    setResult(sum);
+  };
+
+  return (
+    <div>
+      <h2>Calculator</h2>
+      <div>
+        <label>Number 1:</label>
+        <input type="number" value={num1} onChange={(e) => setNum1(Number(e.target.value))} />
+      </div>
+      <div>
+        <label>Number 2:</label>
+        <input type="number" value={num2} onChange={(e) => setNum2(Number(e.target.value))} />
+      </div>
+      <button onClick={handleCalculate}>Calculate</button>
+      <div>
+        <label>Result:</label>
+        <span>{result}</span>
+      </div>
+    </div>
   );
 }
 ```
