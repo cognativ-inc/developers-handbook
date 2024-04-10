@@ -95,8 +95,9 @@ Leverage React Hooks such as useState, useEffect, useContext, etc., for managing
 
 ```typescript
 // MyComponent.tsx
+"use client"
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 interface Data {
   // Define your data type here
