@@ -280,3 +280,42 @@ export default function MyComponent({ name, age }) {
   );
 }
 ```
+
+
+### Avoid uncontrolled Side Effects
+
+Discover best practices for handling side effects in React components to ensure a clean and maintainable codebase. Avoid triggering side effects directly within components' render methods, as this can lead to unexpected behavior and performance issues. Instead, utilize the useEffect hook to manage side effects effectively, ensuring they are executed at the appropriate times during the component lifecycle. This tutorial provides step-by-step guidance on implementing useEffect to manage side effects and ensure proper cleanup when the component unmounts, promoting code clarity and robustness.
+
+```typescript
+import { useEffect, useState } from 'react';
+
+export default function SideEffectComponent() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    // Fetch data when the component mounts
+    fetchData();
+
+    // Clean up the effect when the component unmounts
+    return () => {
+      // Cleanup code here (if necessary)
+    };
+  }, []); // Empty dependency array ensures the effect runs only once
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch('https://api.example.com/data');
+      const jsonData = await response.json();
+      setData(jsonData);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  return (
+    <div>
+      {/* Render data here */}
+    </div>
+  );
+}
+```
