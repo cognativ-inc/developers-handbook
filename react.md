@@ -139,3 +139,48 @@ export default function MyComponent() {
   );
 }
 ```
+
+### Separation of concerns
+
+Follow the principle of single responsibility and break down your components into smaller, reusable pieces. Each component should ideally do one thing and do it well.
+
+```typescript
+// ParentComponent.tsx
+import Title from './Title';
+import Content from './Content';
+import Footer from './Footer';
+
+export default function ParentComponent() {
+  return (
+    <div>
+      <Title />
+      <Content />
+      <Footer />
+    </div>
+  );
+}
+```
+
+
+```typescript
+// Title.tsx
+export default function Title() {
+  return (
+    <div>
+      <h1>Welcome to my website</h1>
+    </div>
+  );
+}
+```
+
+
+```typescript
+// Footer.tsx
+export default function Footer() {
+  return (
+    <footer>
+      <p>Contact information</p>
+    </footer>
+  );
+}
+```
