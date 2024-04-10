@@ -374,3 +374,49 @@ export default function ParentComponent() {
   );
 }
 ```
+
+### Improving Component Design: Avoid Prop Chaining in React
+
+Learn how to enhance the readability and maintainability of your React components by avoiding prop chaining. Prop chaining, where props are passed down through multiple levels of components, can lead to code that is difficult to understand and maintain. Instead, consider using techniques like prop drilling, context API, or component composition to pass data to components more efficiently and maintain a clear component hierarchy. This tutorial provides guidance on identifying and refactoring instances of prop chaining, promoting cleaner and more scalable component design.
+
+```typescript
+// ParentComponent.js
+import React, { useState } from 'react';
+import ChildComponent from './ChildComponent';
+
+export default function ParentComponent() {
+  const [data, setData] = useState('Some data');
+
+  return (
+    <div>
+      <h2>Parent Component</h2>
+      <ChildComponent data={data} />
+    </div>
+  );
+}
+
+// ChildComponent.js
+import React from 'react';
+import GrandchildComponent from './GrandchildComponent';
+
+export default function ChildComponent(props) {
+  return (
+    <div>
+      <h3>Child Component</h3>
+      <GrandchildComponent {...props} />
+    </div>
+  );
+}
+
+// GrandchildComponent.js
+import React from 'react';
+
+export default function GrandchildComponent(props) {
+  return (
+    <div>
+      <h4>Grandchild Component</h4>
+      <p>Data: {props.data}</p>
+    </div>
+  );
+}
+```
