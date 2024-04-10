@@ -319,3 +319,37 @@ export default function SideEffectComponent() {
   );
 }
 ```
+
+### Avoid hardcoding
+
+Learn how to improve the flexibility and maintainability of your React components by avoiding hardcoding data directly within them. Hardcoded data can lead to inflexibility and difficulty in managing changes over time. Instead, opt for fetching data from external sources or passing it down as props to ensure components remain adaptable and reusable. This tutorial provides guidance on strategies for retrieving data dynamically, promoting better code organization and long-term maintainability.
+
+```typescript
+
+// Hardcoded data
+const items = [
+  { id: 1, name: 'Item 1' },
+  { id: 2, name: 'Item 2' },
+  { id: 3, name: 'Item 3' }
+];
+
+// Child component receiving data as props
+function ItemList({ items }) {
+  return (
+    <ul>
+      {items.map(item => (
+        <li key={item.id}>{item.name}</li>
+      ))}
+    </ul>
+  );
+}
+
+export default function ParentComponent() {
+  return (
+    <div>
+      <h2>List of Items</h2>
+      <ItemList items={items} />
+    </div>
+  );
+}
+```
