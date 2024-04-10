@@ -248,3 +248,35 @@ export default function CalculatorComponent() {
   );
 }
 ```
+###  Ensuring Type Safety in React/Next.js with PropTypes or TypeScript
+
+Learn how to enhance the reliability and maintainability of your React and Next.js applications by implementing type safety measures using either PropTypes or TypeScript. By enforcing strict type checks, you can catch bugs early in development and streamline collaboration within your team. This tutorial provides guidance on integrating PropTypes for prop validation or leveraging TypeScript for static type checking, empowering you to build robust and error-resistant components.
+
+```typescript
+// Example using TypeScript for static type checking
+interface Props {
+  name: string;
+  age: number;
+}
+
+export default function MyComponent({ name, age }: Props): JSX.Element {
+  return (
+    <div>
+      <h1>{`Name: ${name}`}</h1>
+      <p>{`Age: ${age}`}</p>
+    </div>
+  );
+}
+```
+
+```typescript
+// Bad example without using any type safety measures
+export default function MyComponent({ name, age }) {
+  return (
+    <div>
+      <h1>{`Name: ${name}`}</h1>
+      <p>{`Age: ${age}`}</p>
+    </div>
+  );
+}
+```
