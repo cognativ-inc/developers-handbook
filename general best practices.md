@@ -13,7 +13,7 @@ Failing to properly validate inputs can result in critical issues such as securi
 Each time we have arguments, we must check them. For example:
 
 ```Javascript
-const sumAllNumbers(number1, number2) {
+function sumAllNumbers(number1, number2) {
 	return number1 + number2
 }
 ```
