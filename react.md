@@ -1,20 +1,20 @@
 # React and Next.js
 
-React, through Next.js, is our defacto frontend library to work on the frontend side. We may have projects were we only do React, but in general terms, Next.js will be the base setup. Each new project, unless exceptions, should be done on the latest Next.js built. Typescript is the base language for coding any frontend application.
+React, specifically through Next.js, is our default frontend library for building user interfaces. While there may be projects where we only use React, Next.js will generally serve as the foundation for most setups. Unless otherwise specified, each new project should be built using the latest version of Next.js. TypeScript is the primary language for coding any frontend application.
 
-In order to have a good development time with Next.js, we recommend you to bookmark the [Next.js Docs](https://nextjs.org/docs).
+To ensure an efficient development experience with Next.js, we recommend bookmarking the [Next.js Docs](https://nextjs.org/docs).
 
 ## Components
 
-To make good components in Next.js, we should respect certain rules:
+To create high-quality components in Next.js, we should adhere to certain guidelines:
 
 ### Use Functional Components
 
-Prefer functional components over class components whenever possible. They are easier to read, write, and maintain.
+Prefer functional components over class components whenever possible, as they are easier to read, write, and maintain.
 
 ### Don't use arrow functions
 
-When creating components, do not use arrow functions, instead, use the standard way to declare functions and export them by default.
+When creating components, avoid using arrow functions. Instead, use the standard function declaration, and export the component by default.
 
 To illustrate, consider the following example:
 
@@ -52,8 +52,7 @@ export default function WellDoneComponent(){
 
 ### Use meaningful component names
 
-When creating components, use meaningful names. Names should descrive what the component does: "Card", "Label", "Title", etc. Sometimes you may find in need to use a composed name, for such cases, avoid descriptive names.
-
+When creating components, ensure that the names are meaningful and clearly describe the component’s purpose, such as “Card,” “Label,” or “Title.” If you need to use a composed name, avoid overly descriptive or verbose names. Instead, aim for concise yet clear names that still convey the component’s functionality. For example, “UserCard” or “ProductLabel” are preferred over excessively detailed names like “CardForUserInformation.”
 To illustrate, consider the following example:
 
 ```typescript
@@ -197,7 +196,7 @@ export default function Footer() {
 
 ### Large Components
 
-Refrain from creating monolithic components with excessive logic. Break them down into smaller, more manageable pieces to improve readability and maintainability.
+Refrain from creating monolithic components with excessive logic. Instead, break them down into smaller, more manageable pieces to enhance readability and maintainability. This approach allows each component to focus on a specific task, making the code easier to understand, test, and reuse.
 
 ### Mixing UI Logic with Business Logic
 
@@ -223,7 +222,7 @@ export default function CalculatorComponent() {
   const [num2, setNum2] = useState<number>(0);
   const [result, setResult] = useState<number>(0);
 
-  const handleCalculate = () => {
+  function handleCalculate(){
     const sum = calculateSum(num1, num2);
     setResult(sum);
   };
@@ -250,7 +249,7 @@ export default function CalculatorComponent() {
 ```
 ###  Ensuring Type Safety in React/Next.js with PropTypes or TypeScript
 
-Learn how to enhance the reliability and maintainability of your React and Next.js applications by implementing type safety measures using either PropTypes or TypeScript. By enforcing strict type checks, you can catch bugs early in development and streamline collaboration within your team. This tutorial provides guidance on integrating PropTypes for prop validation or leveraging TypeScript for static type checking, empowering you to build robust and error-resistant components.
+Learn how to enhance the reliability and maintainability of your React and Next.js applications by implementing type safety measures using either PropTypes or TypeScript. Enforcing strict type checks allows you to catch bugs early in development and streamline collaboration within your team. This tutorial provides guidance on integrating PropTypes for runtime prop validation or leveraging TypeScript for static type checking, empowering you to build robust and error-resistant components. By incorporating these practices, you can ensure your code is more predictable, easier to debug, and better suited for team collaboration.​⬤
 
 ```typescript
 // Example using TypeScript for static type checking
@@ -284,7 +283,9 @@ export default function MyComponent({ name, age }) {
 
 ### Avoid uncontrolled Side Effects
 
-Discover best practices for handling side effects in React components to ensure a clean and maintainable codebase. Avoid triggering side effects directly within components' render methods, as this can lead to unexpected behavior and performance issues. Instead, utilize the useEffect hook to manage side effects effectively, ensuring they are executed at the appropriate times during the component lifecycle. This tutorial provides step-by-step guidance on implementing useEffect to manage side effects and ensure proper cleanup when the component unmounts, promoting code clarity and robustness.
+Discover best practices for handling side effects in React components to maintain a clean and maintainable codebase. Avoid triggering side effects directly within a component’s render method, as this can lead to unexpected behavior and performance issues. Instead, utilize the useEffect hook to manage side effects effectively, ensuring they are executed at the appropriate times during the component lifecycle.
+
+This tutorial provides step-by-step guidance on implementing useEffect to manage side effects, including proper cleanup when the component unmounts. By following these practices, you can promote code clarity and robustness, making your components more predictable and easier to maintain.
 
 ```typescript
 import { useEffect, useState } from 'react';
@@ -322,9 +323,9 @@ export default function SideEffectComponent() {
 
 ### Avoid hardcoding
 
-Learn how to improve the flexibility and maintainability of your React components by avoiding hardcoding data directly within them. Hardcoded data can lead to inflexibility and difficulty in managing changes over time. Instead, opt for fetching data from external sources or passing it down as props to ensure components remain adaptable and reusable. This tutorial provides guidance on strategies for retrieving data dynamically, promoting better code organization and long-term maintainability.
+Learn how to improve the flexibility and maintainability of your React components by avoiding hardcoding data directly within them. Hardcoded data can lead to inflexibility and make it difficult to manage changes over time. Instead, opt for fetching data from external sources or passing it down as props to ensure components remain adaptable and reusable. This tutorial provides guidance on strategies for retrieving data dynamically, promoting better code organization and long-term maintainability.
 
-The following example shows a hardcoded code that can be improved:
+The following example shows a hardcoded component that can be improved:
 
 ```typescript
 import React from 'react';
@@ -377,7 +378,9 @@ export default function ParentComponent() {
 
 ### Improving Component Design: Avoid Prop Chaining in React
 
-Learn how to enhance the readability and maintainability of your React components by avoiding prop chaining. Prop chaining, where props are passed down through multiple levels of components, can lead to code that is difficult to understand and maintain. Instead, consider using techniques like prop drilling, context API, or component composition to pass data to components more efficiently and maintain a clear component hierarchy. This tutorial provides guidance on identifying and refactoring instances of prop chaining, promoting cleaner and more scalable component design.
+Learn how to enhance the readability and maintainability of your React components by avoiding prop chaining. Prop chaining, where props are passed down through multiple levels of components, can lead to code that is difficult to understand and maintain. Instead, consider using alternative techniques like context API or component composition to pass data to components more efficiently while maintaining a clear and concise component hierarchy.
+
+This tutorial provides guidance on identifying and refactoring instances of prop chaining, promoting cleaner and more scalable component design.
 
 ```typescript
 // ParentComponent.js
