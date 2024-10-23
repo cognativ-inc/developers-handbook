@@ -331,7 +331,7 @@ if (person.age <= 18) {
 }
 ```
 
-### Abstract conditions into functions
+### Abstract conditions into functions
 
 abstracting conditions into functions is a good practice. By doing so, you can:
 
