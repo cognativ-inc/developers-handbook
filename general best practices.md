@@ -2,6 +2,188 @@
 
 This guide will serve for all languages, always trying to make the best practices to improve your programming skills with these tips.
 
+## No passwords in code
+
+One of the most important security practices is to **never store passwords, API keys, or any sensitive information directly in your code**. Hard-coding credentials or sensitive data in source files exposes them to version control systems and anyone with access to the codebase. This can lead to security breaches and compromised applications. Here’s how you can avoid these issues.
+
+### Use environment variables
+
+Instead of hard-coding sensitive data, use environment variables to manage them safely. This allows you to separate configuration settings from your code, making it easier to manage and keep secure. Most programming languages and frameworks provide support for environment variables.
+
+For example, in **Node.js**, you can use the `process.env` object to access environment variables:
+
+```javascript
+// Don't do this:
+const apiKey = 'your-api-key';
+
+// Instead, use environment variables:
+const apiKey = process.env.API_KEY;
+```
+In Python, use the `os` module to access environment variables:
+
+```python
+import os
+
+# Don't do this:
+API_KEY = 'your-api-key'
+
+# Instead, use environment variables:
+API_KEY = os.getenv('API_KEY')
+```
+
+### Use a configuration management system
+
+In larger applications or projects with multiple environments (e.g., development, staging, production), consider using a dedicated configuration management tool or service to handle sensitive information. Examples include:
+
+* AWS Secrets Manager
+* Azure Key Vault
+* Google Cloud Secret Manager
+* Docker secrets for containerized environments
+
+### Never commit sensitive data
+
+Make sure sensitive files, such as those containing environment-specific configurations, are excluded from your version control system. Use `.gitignore` or similar mechanisms to prevent committing files with credentials.
+
+### Avoid using `eval()` and similar functions
+
+Using `eval()` or similar functions like `setTimeout()`, `setInterval()`, or `new Function()` with user-generated content can expose your application to **code injection attacks**. These functions execute code dynamically, and if improperly handled, they can run malicious code on your system.
+
+#### JavaScript Example:
+
+```javascript
+// Don't do this:
+const userInput = 'alert("Hello!")';
+eval(userInput); // Risky: Could execute malicious code
+
+// Instead, find safer alternatives, such as explicit conditional checks:
+
+const userInput = 'someInput';
+if (userInput === 'expectedValue') {
+  // Handle input safely
+  console.log('Input is valid');
+} else {
+  console.log('Invalid input');
+}
+
+```
+### Use HTTPS Everywhere
+
+Ensure your application communicates over **HTTPS** to protect the integrity and confidentiality of data transmitted between the client and server. All sensitive information, including login credentials, should be transmitted securely using TLS (Transport Layer Security).
+
+- Enforce HTTPS by redirecting HTTP requests to HTTPS.
+- Use HTTP Strict Transport Security (HSTS) headers to prevent man-in-the-middle attacks.
+
+#### Example:
+
+To enforce HTTPS and prevent insecure connections, add the following HTTP header to your server configuration:
+
+```bash
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+```
+
+### Sanitize User Inputs
+
+User input must always be treated as potentially malicious. Failing to sanitize input can lead to **Cross-Site Scripting (XSS)**, **SQL Injection**, or other forms of attack. Always sanitize and validate inputs before processing them, especially when dealing with dynamic content or database queries.
+
+#### JavaScript Example:
+
+```javascript
+function sanitizeInput(input) {
+  const div = document.createElement('div');
+  div.appendChild(document.createTextNode(input));
+  return div.innerHTML;
+}
+
+const userInput = "<script>alert('XSS')</script>";
+console.log(sanitizeInput(userInput)); // Outputs sanitized input
+```
+
+### Hash and Salt Passwords
+
+Never store passwords as plain text. Always hash and salt passwords before storing them in your database. This ensures that even if your database is compromised, attackers cannot easily retrieve the original passwords. 
+
+Hashing converts passwords into a fixed-length string of characters, while salting adds an extra layer of security by appending a unique value (the salt) to the password before hashing. This makes it much harder for attackers to use precomputed dictionaries (rainbow tables) to crack the passwords.
+
+#### Example using bcrypt in Node.js:
+
+```javascript
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
+// Hashing a password
+const hashPassword = async (password) => {
+  const salt = await bcrypt.genSalt(saltRounds);
+  return await bcrypt.hash(password, salt);
+};
+
+// Verifying a password
+const verifyPassword = async (inputPassword, hashedPassword) => {
+  return await bcrypt.compare(inputPassword, hashedPassword);
+};
+
+// Example usage
+const password = 'mySecurePassword';
+const hashedPassword = await hashPassword(password);
+
+const isPasswordCorrect = await verifyPassword('userInputPassword', hashedPassword);
+console.log(isPasswordCorrect ? 'Password is correct' : 'Invalid password');
+```
+### Use Content Security Policy (CSP)
+
+**Content Security Policy (CSP)** is an HTTP header that helps protect your website from **Cross-Site Scripting (XSS)** and other code injection attacks by controlling which resources can be loaded on your web pages. It acts as a whitelist, allowing only trusted sources of content (such as scripts, styles, or media) to be executed by the browser.
+
+#### Example of a basic CSP:
+
+```bash
+Content-Security-Policy: default-src 'self'; img-src https://*; child-src 'none';
+```
+
+#### More complex example:
+
+```bash
+Content-Security-Policy: 
+    default-src 'self'; 
+    script-src 'self' 'unsafe-inline' https://trusted-scripts.com; 
+    style-src 'self' 'unsafe-inline' https://trusted-styles.com;
+    img-src 'self' https://trusted-images.com;
+    object-src 'none';
+```
+
+#### Example of a basic CSP:
+
+```bash
+Content-Security-Policy: default-src 'self'; img-src https://*; child-src 'none';
+```
+
+#### Why CSP is important:
+
+* Mitigates XSS attacks: By restricting the sources from which scripts can be loaded, CSP can help prevent malicious scripts from being executed in your web application.
+* Reduces attack surface: By limiting where content can be loaded from, CSP reduces the potential avenues an attacker can exploit to inject malicious content into your site.
+
+## Limit Request Size and Rate
+
+Rate limiting and request size limiting help prevent denial-of-service (DoS) attacks or abuse by controlling how much and how often data can be sent to your servers.
+
+```javascript
+const rateLimit = require('express-rate-limit');
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+});
+
+app.use(limiter);
+```
+
+## Use Dependency Scanners
+
+Outdated or vulnerable libraries are a common security threat. Always use automated tools to scan your dependencies for vulnerabilities and regularly update them.
+
+* Node.js: Use npm audit or yarn audit.
+* Python: Use pip-audit.
+* Java: Use tools like OWASP Dependency-Check.
+
+
 ## Always Input validate
 
 Input validation is a crucial aspect of programming in any language. It is essential to check the inputs before processing the outputs to prevent potential security vulnerabilities and unexpected behavior. The questions that arise are when to check, what to check, and how to check.
