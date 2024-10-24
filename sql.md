@@ -143,6 +143,7 @@ Another important defense is validating and sanitizing all user inputs. You shou
 * Avoid blacklisting, which may be bypassed by sophisticated attacks.
 
 **Example:**:
+
 ```sql
 -- Only allow usernames with letters, numbers, and underscores
 IF userInput ~ '^[A-Za-z0-9_]+$' THEN
@@ -157,7 +158,9 @@ Escaping is a way to ensure that special characters (such as quotes) in user inp
 * Avoid blacklisting, which may be bypassed by sophisticated attacks.
 
 **Example:**:
+
 ```sql
 SELECT * FROM users WHERE username = quote_literal(userInput);
 ```
+
 However, escaping should not be the primary defense. It is more prone to errors and should only be used as a fallback where parameterized queries are not possible.
