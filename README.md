@@ -1,4 +1,4 @@
-# Cognitiv Inc. Developer's Handbook
+# Cognativ Inc. Developer's Handbook
 
 ## Recommendation 16 January 2023
 
