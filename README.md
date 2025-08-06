@@ -1,9 +1,10 @@
-# Cognitive Developer's Handbook
+# Cognitiv Inc. Developer's Handbook
 
 ## Recommendation 16 January 2023
 
 ### This version:
-http://bitbucket…
+
+https://github.com/cognativ-inc/developers-handbook/
 
 ### Editor
 
