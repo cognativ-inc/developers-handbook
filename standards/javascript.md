@@ -1,12 +1,21 @@
 <!-- @format -->
 
-# Javascript
+# JavaScript
 
-Learn about the best practices for JavaScript development at Cognativ to avoid common issues during code review. By following these guidelines, you can save time and prevent headaches. Many of these principles are based on the principles of clean code.
+| Field | Value |
+| --- | --- |
+| Owner | Engineering |
+| Applies to | Cognativ JavaScript engineering |
+| Status | Active |
+| Last reviewed | 2026-08-24 |
 
-This guide will be written in full Javascript examples, for Typescript read the proper chapter.
+Best practices for JavaScript development at Cognativ, so that avoidable problems don't surface in code review. Many of these principles come from clean-code practice.
 
-Unless client requirement, always work in ES6.
+Examples here are in plain JavaScript; for TypeScript, see the [TypeScript guide](typescript.md). For React and Next.js specifics, see [React and Next.js](react.md).
+
+Write modern JavaScript: ES2015 (ES6) features and later are the baseline, and you should use what the project's runtime and browser targets support — check the project's `tsconfig`, Babel, or build configuration rather than assuming. Where a client constrains the target, follow the client's constraint.
+
+> **Security requirements** — input validation, output encoding, secrets, dependencies, error handling — are in the [Secure Software Development Standard](../security/secure-software-development-standard.md). Practical, language-level security guidance is in [general best practices](general-best-practices.md).
 
 ## Variables
 

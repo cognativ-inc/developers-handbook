@@ -1,4 +1,15 @@
-# Typescript guide
+# TypeScript guide
+
+| Field | Value |
+| --- | --- |
+| Owner | Engineering |
+| Applies to | Cognativ TypeScript engineering |
+| Status | Active |
+| Last reviewed | 2026-08-24 |
+
+TypeScript is the primary language for Cognativ frontend work and is preferred for Node.js services. See also the [JavaScript guide](javascript.md) and [React and Next.js](react.md).
+
+> **Types are not a security control.** They are erased at runtime, so they cannot validate anything that arrives from outside your code. Data crossing a trust boundary — request bodies, query strings, third-party API responses, message payloads — must be validated at runtime with a schema validator, and the security requirements in the [Secure Software Development Standard](../security/secure-software-development-standard.md) apply regardless of how well-typed the code is. A parameter typed `string` can still hold a SQL injection payload.
 
 ## Describing data
 
