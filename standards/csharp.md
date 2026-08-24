@@ -1,6 +1,29 @@
-# C#Sharp
+# C#
 
-This document describes rules and recommendations for developing applications and class libraries using the C# Language. The goal is to define guidelines to enforce consistent style and formatting and help developers avoid common pitfalls and mistakes. Specifically, this document covers Naming Conventions, Coding Style, Language Usage, and Object Model Design.
+| Field | Value |
+| --- | --- |
+| Owner | Engineering |
+| Applies to | Cognativ C# / .NET engineering |
+| Status | Active — style and conventions reference |
+| Last reviewed | 2026-08-24 |
+
+This document describes rules and recommendations for developing applications and class libraries in C#. The goal is consistent style and formatting, and helping developers avoid common pitfalls. It covers naming conventions, coding style, language usage, and object model design.
+
+> **Security requirements are not in this document.** They are in the [Secure Software Development Standard](../security/secure-software-development-standard.md), which applies to all C# work: authentication, authorization, input validation, parameterized queries, secrets, cryptography, error handling, and dependencies.
+
+### How this document relates to project tooling
+
+Where a repository provides an `.editorconfig`, analyzer configuration, or the .NET SDK's built-in analyzers and formatting rules, **that configuration is authoritative** — it is enforced at build time and applies to everyone, including tooling. This document explains the reasoning and covers the conventions that tooling does not check. If the two disagree, fix the mismatch rather than silently ignoring one of them.
+
+### Legacy guidance
+
+Parts of this guide predate modern .NET and are retained because the reasoning is still useful, but check them against the framework you are targeting:
+
+- **Assembly-level guidance** (`ComVisibleAttribute`, manual `AssemblyVersion` management, `AssemblyInfo.cs`) reflects .NET Framework projects. On modern SDK-style projects these are usually set as properties in the `.csproj` or handled by the build pipeline.
+- **String handling.** Prefer string interpolation (`$"…"`) for readability; `StringBuilder` still wins inside loops and for large concatenations. The advice to avoid concatenation in a loop remains correct.
+- **Type checks and casts.** Prefer pattern matching (`if (value is Customer customer)`, `switch` expressions) over an `as` cast followed by a null check.
+- **Nullability.** On projects with nullable reference types enabled, let the compiler carry the contract instead of relying only on runtime null checks — and keep validating input that crosses a trust boundary regardless ([standard §6](../security/secure-software-development-standard.md#6-input-validation-and-output-encoding)).
+- **`#region` blocks** are no longer a widely favored organizing tool. If a file needs regions to stay navigable, it is usually too large.
 
 ### Scope
 
@@ -1144,8 +1167,9 @@ In this example, comment blocks are used to describe the purpose and behavior of
 
 By always applying comment blocks to public, protected, and internal declarations, you can make your code more readable and easier to maintain, especially for other developers who may be working on the project.
 
-### Only use C# comment-blocks for documenting the API.
-Always include comments. Include `<param>`, `<return>`, and `<exception>` comment sections where applicable
+### Only use C# comment-blocks for documenting the API
+
+Always include comments, and include `<param>`, `<return>`, and `<exception>` sections where applicable.
 
 In C#, it's considered a best practice to only use comment blocks (`///`) for documenting the API, and to always include comments. Additionally, it's important to include `<param>`, `<return>`, and `<exception>` comment sections where applicable. Here's why:
 
@@ -1810,7 +1834,7 @@ By appending computational qualifiers to variable names like "Average", "Count",
 
 Using a Product, Company, or Developer Name as the root namespace can help to organize the code and make it easier to understand the purpose and scope of the code. This is especially important for larger projects, where there may be multiple namespaces and classes.
 
-##By using a Product, Company, or Developer Name as the root namespace, you can also help to prevent naming conflicts with other namespaces and classes.
+Using a product, company, or developer name as the root namespace also helps prevent naming conflicts with other namespaces and classes.
 
 Bad example:
 
@@ -2012,7 +2036,7 @@ In this example, the unsafe code block is separated into its own assembly (`Unsa
 
 By factoring classes containing unsafe code blocks into a separate assembly, you can isolate the unsafe code from the rest of your application and limit the potential impact of any security or stability issues, and also improve the overall maintainability and readability of your code.
 
-### Avoid mutual references between assemblies. 4.2 Variables & Types
+### Avoid mutual references between assemblies
 
 Mutual references occur when two or more assemblies reference each other directly or indirectly. This can create a circular dependency that can lead to issues such as compiler errors, runtime errors, and difficulties in maintaining and updating the code.
 
@@ -2062,7 +2086,9 @@ In this example, AssemblyA and AssemblyB are decoupled using an interface (*IOth
 
 By avoiding mutual references between assemblies, especially when it comes to variables and types, you can minimize the risk of issues such as compiler errors, runtime errors, and difficulties in maintaining and updating the code. Using interfaces to define the contract between assemblies can help to decouple the assemblies and make the code easier to manage and update.
 
-### 
+## Variables and types
+
+### Initialize variables where they are declared
 
 Initializing variables where they are declared can make the code more readable and easier to understand. It can also help to prevent errors and improve performance by ensuring that variables are properly initialized before they are used.
 

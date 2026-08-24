@@ -1,8 +1,17 @@
 # React and Next.js
 
-React, specifically through Next.js, is our default frontend library for building user interfaces. While there may be projects where we only use React, Next.js will generally serve as the foundation for most setups. Unless otherwise specified, each new project should be built using the latest version of Next.js. TypeScript is the primary language for coding any frontend application.
+| Field | Value |
+| --- | --- |
+| Owner | Engineering |
+| Applies to | Cognativ frontend engineering |
+| Status | Active |
+| Last reviewed | 2026-08-24 |
 
-To ensure an efficient development experience with Next.js, we recommend bookmarking the [Next.js Docs](https://nextjs.org/docs).
+React, specifically through Next.js, is our default frontend library for building user interfaces. Some projects use React alone, but Next.js is the foundation for most setups. Unless otherwise specified, each new project should be built on a current, supported version of Next.js, and TypeScript is the primary language for frontend work.
+
+Bookmark the [Next.js documentation](https://nextjs.org/docs) — the App Router, caching, and server/client component rules change between major versions, so check the docs for the version your project is on rather than relying on memory.
+
+> **Security:** frontend code is never the security boundary. Requirements for XSS, CSP, browser storage, cookies, CSRF, and sensitive state are in [Secure Software Development Standard §21](../security/secure-software-development-standard.md#21-frontend-security). A short summary is at the [end of this document](#frontend-security-essentials).
 
 ## Components
 
@@ -83,13 +92,35 @@ export default function ColoredCard({ color, children }: ColoredCardProps) {
 }
 ```
 
-### Remove import React from 'react';
+### You don't need `import React from 'react'`
 
-Since we're using Next, we don't need to use `import React from 'react';`.
+With the modern JSX transform (used by Next.js and by React 17 and later), JSX no longer requires `React` to be in scope. Import only the hooks and APIs you actually use:
 
-### "use client" and React Hooks
+```typescript
+import { useState, useEffect } from 'react';
+```
 
-Leverage React Hooks such as useState, useEffect, useContext, etc., for managing state, side effects, and context within your components. As a rule, in Next.js you must add `"use client"`.
+Import types explicitly where you need them (`import type { ReactNode } from 'react'`).
+
+### Server and client components, and `"use client"`
+
+In the Next.js App Router, components are **server components by default**. Add `"use client"` at the top of a file only when that component needs something the server cannot do:
+
+- React state or lifecycle hooks (`useState`, `useReducer`, `useEffect`, `useLayoutEffect`);
+- context consumed with `useContext`, or refs;
+- browser-only APIs (`window`, `document`, `localStorage`);
+- event handlers attached to DOM elements.
+
+`"use client"` marks a boundary: everything imported into that subtree is bundled for the browser. Adding it unnecessarily makes bundles larger, gives up server-side data access, and — most importantly — **puts code and data into the client bundle where the user can read them**.
+
+Keep it as far down the tree as possible: fetch data in a server component, then pass only what is needed into a small interactive client component.
+
+Two rules that follow from this:
+
+- **Never put secrets in a client component.** Anything reachable from a `"use client"` file ships to the browser, as does any environment variable prefixed `NEXT_PUBLIC_`.
+- **Don't over-fetch on the server.** Data serialized into a client component's props is visible in the page payload. Select only the fields the UI renders ([standard §21](../security/secure-software-development-standard.md#21-frontend-security)).
+
+The example below is a client component because it uses `useState` and `useEffect`. In current Next.js, this particular pattern — fetching on mount — is usually better expressed as a server component that awaits the data, or with a data-fetching library that handles caching, retries, and error states.
 
 
 ```typescript
@@ -247,7 +278,8 @@ export default function CalculatorComponent() {
   );
 }
 ```
-###  Ensuring Type Safety in React/Next.js with PropTypes or TypeScript
+
+### Ensuring type safety with PropTypes or TypeScript
 
 Learn how to enhance the reliability and maintainability of your React and Next.js applications by implementing type safety measures using either PropTypes or TypeScript. Enforcing strict type checks allows you to catch bugs early in development and streamline collaboration within your team. This tutorial provides guidance on integrating PropTypes for runtime prop validation or leveraging TypeScript for static type checking, empowering you to build robust and error-resistant components. By incorporating these practices, you can ensure your code is more predictable, easier to debug, and better suited for team collaboration.​⬤
 
@@ -423,3 +455,18 @@ export default function GrandchildComponent(props) {
   );
 }
 ```
+
+---
+
+## Frontend security essentials
+
+Full requirements: [Secure Software Development Standard §21](../security/secure-software-development-standard.md#21-frontend-security). The rules that come up most often in React and Next.js work:
+
+- **The frontend is not the security boundary.** Hidden menus, disabled buttons, filtered lists, and client-side route guards are UX. Every one of them needs a corresponding server-side authorization check ([standard §5](../security/secure-software-development-standard.md#5-authorization)).
+- **Let JSX escape for you.** `{value}` is safe. `dangerouslySetInnerHTML` is not — never give it untrusted content. If untrusted HTML must be rendered, sanitize it with a maintained library such as DOMPurify first.
+- **No secrets in the bundle.** `NEXT_PUBLIC_*` variables are public. API keys, tokens, and private configuration belong on the server, accessed through a route handler or server action.
+- **Validate on the server too.** Client-side form validation is for user experience; the server validates independently ([standard §6](../security/secure-software-development-standard.md#6-input-validation-and-output-encoding)). Server actions and route handlers are public endpoints — validate their input and check authorization inside them.
+- **Be careful with browser storage.** `localStorage` and `sessionStorage` are readable by any script on the origin. Prefer `HttpOnly`, `Secure`, `SameSite` cookies for session material; don't store long-lived tokens or personal data in the browser.
+- **Validate user-controlled URLs** before using them in `href`, `src`, or a redirect — reject `javascript:` and `data:` schemes. Use `rel="noopener noreferrer"` on links opened in a new tab.
+- **Third-party scripts run with full access to the page.** Justify each one, and keep them off pages that handle credentials or sensitive data.
+- **Don't ship sensitive data to error reporting.** Client-side logging and monitoring tools must not receive tokens or personal data.
